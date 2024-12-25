@@ -1,101 +1,166 @@
+"use client";
 import Image from "next/image";
+import React, { useState } from "react";
+import Sidebar from "./components/sidebar";
+import './globals.css';
+
+const projects = [
+  {
+    name: "design-system",
+    visibility: "Public",
+    language: "React",
+    size: "7320 KB",
+    updated: "1 day ago",
+  },
+  {
+    name: "codeant-ci-app",
+    visibility: "Private",
+    language: "JavaScript",
+    size: "5871 KB",
+    updated: "2 days ago",
+  },
+  {
+    name: "analytics-dashboard",
+    visibility: "Private",
+    language: "Python",
+    size: "4521 KB",
+    updated: "5 days ago",
+  },
+  {
+    name: "mobile-app",
+    visibility: "Public",
+    language: "Swift",
+    size: "3096 KB",
+    updated: "3 days ago",
+  },
+  {
+    name: "e-commerce-platform",
+    visibility: "Private",
+    language: "Java",
+    size: "6210 KB",
+    updated: "6 days ago",
+  },
+  {
+    name: "blog-website",
+    visibility: "Public",
+    language: "HTML/CSS",
+    size: "1876 KB",
+    updated: "4 days ago",
+  },
+  {
+    name: "social-network",
+    visibility: "Private",
+    language: "PHP",
+    size: "5432 KB",
+    updated: "7 days ago",
+  },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredProjects = projects.filter((project) =>
+    project.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <div className="flex flex-col md:flex-row">
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen}/>
+      <div className="w-full md:w-full h-screen bg-[#FAFAFA] md:p-6">
+        <div className="border border-[#E9EAEB] rounded-lg overflow-hidden">
+          <div className={`${isOpen !==false ? "bg-[#adadad]": "bg-[#FAFAFA]"} px-4 md:px-6 py-5 border-b border-[#E9EAEB]`}>
+            <div className="flex flex-col gap-3 md:gap-0 sm:flex-row w-full justify-between">
+              <div>
+                <p className="text-[181D27] text-2xl font-semibold">
+                  Repositories
+                </p>
+                <p className="text-sm text-[#414651] mt-1">
+                  33 total repositories
+                </p>
+              </div>
+              <div className="flex gap-3 py-2">
+                <div className="px-[14px] py-[8px] flex gap-1 items-center border border-[#D5D7DA] shadow-sm rounded-md">
+                  <Image
+                    width={20}
+                    height={20}
+                    src="/images/refresh-icon.svg"
+                    alt="refresh-icon"
+                  />
+                  <button className="text-sm">Refresh All</button>
+                </div>
+                <div className="bg-[#1570EF] text-white px-[14px] py-[8px] flex gap-1 items-center border border-[#D5D7DA] shadow-sm rounded-md">
+                  <Image
+                    width={20}
+                    height={20}
+                    src="/images/add-icon.svg"
+                    alt="add-icon"
+                  />
+                  <button className="text-sm">Add Repository</button>
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 max-w-[366px] flex gap-[10px] border border-[#D5D7DA] rounded-md px-[14px] py-[10px]">
+              <Image
+                width={14}
+                height={14}
+                src="/images/search.svg"
+                alt="search-icon"
+              />
+              <input
+                type="text"
+                placeholder="Search repositories"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className={`${isOpen !==false ? "bg-[#adadad]": "bg-[#FAFAFA]"} placeholder:text-[#414651] text-base leading-5 placeholder:text-base placeholder:leading-5 outline-none`}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col">
+            {filteredProjects.map((project, index) => (
+              <div
+                key={index}
+                  className={`${isOpen !==false ? "bg-[#adadad]": "bg-[#FAFAFA]"} flex flex-col gap-2 border-b border-[#E9EAEB] p-4 hover:bg-[#F5F5F5]`}
+              >
+                <div>
+                  <span className="font-medium text-lg leading-6 mr-2 text-[#181D27]">
+                    {project.name}
+                  </span>
+                  <span className="text-sm border border-[#B2DDFF] bg-[#EFF8FF] text-[#175CD3] px-[10px] py-[2px] rounded-2xl">
+                    {project.visibility}
+                  </span>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <span className="text-sm">{project.language}</span>
+                  <div className="size-2 bg-blue-600 rounded-full inline-block mr-3 md:mr-4"></div>
+                  <Image
+                    width={11}
+                    height={12}
+                    src="/images/database.svg"
+                    alt="database-icon"
+                    className="inline"
+                  />
+                  <span className="text-sm mr-3 md:mr-4 whitespace-nowrap">
+                    {project.size}
+                  </span>
+                  <span className="text-sm whitespace-nowrap">
+                    Updated {project.updated}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
